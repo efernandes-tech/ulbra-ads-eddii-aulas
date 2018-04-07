@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <conio.h>
 #include <malloc.h>
+#include <stdlib.h>
 
 struct tree{
 	int info;
 	struct tree *esq, *dir;
 } *raiz, *novo, *plist;
 
-unsigned insere(struct tree *plist1, int inf) {
+tree * insere(struct tree *plist1, int inf) {
 	struct tree *raiz1;
 	if (plist1 == NULL) {
 		novo = (struct tree *) malloc(sizeof(struct tree));
@@ -64,8 +65,8 @@ void destruir(struct tree *raiz1) {
 int inf=0;
 char resp = 's';
 
-void main(void) {
-	clsscr();
+int main() {
+	system("cls");
 	raiz = NULL;
 	
 	printf("Digite um valor:");
@@ -82,7 +83,7 @@ void main(void) {
 			printf("Digite outro valor: ");
 			scanf("%d",&inf);
 			plist = insere(raiz, inf);
-			printf("Conteudo de PLIST %u", plist):
+			printf("Conteudo de PLIST %u", plist);
 		} else {
 			break;
 		}

@@ -9,11 +9,10 @@ struct tree {
 };
 
 typedef struct tree *TREEPTR;
-typedef struct tree *AVRPTR;
 
 void tInsere(TREEPTR *plist, char x);
-AVRPTR tPesq(TREEPTR *plist, char x);
-AVRPTR tMaior(TREEPTR *plist);
+TREEPTR tPesq(TREEPTR *plist, char x);
+TREEPTR tMaior(TREEPTR *plist);
 int tRemove(TREEPTR *plist, char *x);
 void emOrdem(TREEPTR t);
 void preOrdem(TREEPTR t);
@@ -76,43 +75,104 @@ main() {
 		
 		
 		if (op == 5) {
-			/*puts("Informe o valor a ser localizado na arvore: ");
-			scanf("%d", &dadodigitado);
-			if (localizar(&raiz, dadodigitado) == NULL) {
+			puts("Informe o valor a ser localizado na arvore: ");
+			scanf("%d", &letra);
+			if (tPesq(&raiz, letra) == NULL) {
 				puts("\nElemento nao localizado");
 			} else {
 				puts("\nElemento localizado");
 			}
-			getch();*/
+			getch();
 		}
 	} // Fim do while.
 }
 
 void tInsere(TREEPTR *plist, char x) {
-	printf("tInsere");
+	if ((*plist) == NULL) {
+		*plist=(TREEPTR) malloc (sizeof(struct tree));
+		(*plist)->info=x;
+		(*plist)->esq=NULL;
+		(*plist)->dir=NULL;
+	} else {
+		if (x < (*plist)->info) {
+			tInsere(&((*plist)->esq), x);
+		} else {
+			tInsere(&((*plist)->dir), x);
+		}
+	}
 }
 
-AVRPTR tPesq(TREEPTR *plist, char x) {
-	printf("tPesq");
+TREEPTR tPesq(TREEPTR *plist, char x) {
+	if (*plist == NULL) {
+		return (NULL);
+	} else if (x == (*plist)->info) {
+		return (*plist);
+	} else if (x < (*plist)->info) {
+		return (NULL);//*tPesq(&((*plist)->esq), x));
+	} else {
+		return (NULL);//*tPesq(&((*plist)->dir), x));
+	}
 }
 
-AVRPTR tMaior(TREEPTR *plist) {
-	printf("tMaior");
+TREEPTR tMaior(TREEPTR *plist) {
+	TREEPTR t;
+	t=*plist;
+	if (t->dir == NULL) {
+		*plist=(*plist)->esq;
+		return (t);
+	} else {
+		return (tMaior(&((*plist)->dir)));
+	}
 }
 
 int tRemove(TREEPTR *plist, char *x) {
-	printf("tRemove");
+	TREEPTR p;
+	if (*plist==NULL) {
+		return (1);
+	}
+	if ((*x == (*plist)->info) == 1) {
+		p=*plist;
+		if ((*plist)->esq == NULL) {
+			// A raiz nao tem filho esquerdo.
+			*plist=(*plist)->dir;
+		} else if ((*plist)->dir == NULL) {
+			// A raiz nao tem filho direito.
+			*plist=(*plist)->esq;
+		} else {
+			// A raiz tem ambos os filhos.
+			p=tMaior(&((*plist)->esq));
+			(*plist)->info = p->info;
+		}
+		free(p);
+		printf("\nElemento achado e removido");
+	} else if ((*x < (*plist)->info) == 1) {
+		tRemove(&((*plist)->esq), x);
+	} else {
+		tRemove(&((*plist)->dir), x);
+	}
 }
 
 void emOrdem(TREEPTR t) {
-	printf("emOrdem");
+	if (t != NULL) {
+		emOrdem(t->esq);
+		printf(" %c,", t->info);
+		emOrdem(t->dir);
+	}
 }
 
 void preOrdem(TREEPTR t) {
-	printf("preOrdem");
+	if (t != NULL) {
+		printf(" %c, ", t->info);
+		preOrdem(t->esq);
+		preOrdem(t->dir);
+	}
 }
 
 void posOrdem(TREEPTR t) {
-	printf("posOrdem");
+	if (t!=NULL) {
+		posOrdem(t->esq);
+		posOrdem(t->dir);
+		printf(" %c,", t->info);
+	}
 }
 
