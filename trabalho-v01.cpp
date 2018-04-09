@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+#include <locale.h>
 #include <conio.c>
 
 typedef struct aluno {
@@ -13,65 +14,84 @@ typedef struct aluno {
 
 void inserir(turma *aluno, char nome[50], float media, int ano);
 void listarEmOrdem(turma aluno);
-// int remover(tipo *plist, char *x);
-// tipo localizar(tipo *nodo, int n);
+int remover(turma *aluno, char nome[50]);
+turma maior(turma *aluno);
+void parentesesAninhados(turma aluno);
 
 main() {
+	setlocale(LC_ALL, "Portuguese");
+
 	turma t = NULL;
-	int op = 0, achou = 0;
+
 	char nome[50];
 	float media;
 	int ano;
+	
+	int op = 0;
 
-	while (op != 6) {
+	while (op != 5) {
 		system("cls");
-		printf("Menu de op%c%ces\n", 135, 228);
-		puts("1 - Inserir");
-		puts("2 - Listar Em-ordem");
-		puts("3 - Remover");
-		puts("6 - Sair");
+
+		gotoxy(2,2); printf("===== Menu de Opções =====");
+		gotoxy(2,4); printf("1 - Inserir Aluno.");
+		gotoxy(2,6); printf("2 - Listar Em-ordem.");
+		gotoxy(2,8); printf("3 - Remover Aluno.");
+		gotoxy(2,10); printf("4 - Parênteses Aninhados.");
+		gotoxy(2,12); printf("5 - Sair");
 		
-		printf("Escolha uma op%c%co: ", 135, 198);
+		gotoxy(2,16); printf("Escolha uma Opção: ");
 		scanf("%d", &op);
 		fflush(stdin);
+		
 		system("cls");
 		
 		if (op == 1) {
-			printf("Nome.........................: ");
+			gotoxy(2,2); printf("Nome......: ");
 			fflush(stdin);
 			fgets(nome,50,stdin);
-			printf("Media........................: ");
+
+			gotoxy(2,4); printf("Media.....: ");
 			scanf("%f",&media);
-			printf("Ano..........................: ");
+
+			gotoxy(2,6); printf("Ano.......: ");
 			scanf("%i",&ano);
+			
 			inserir(&t, nome, media, ano);
+			
 			getch();
 		}
 		
 		if (op == 2) {
 			if (t == NULL) {
-				puts("Arvore vazia");
+				printf("Arvore Vazia!");
 			} else {
 				listarEmOrdem(t);
 			}
 			getch();
 		}
 		
-		/*if (op == 3) {
-			puts("Informe o valor a ser localizado na arvore: ");
-			scanf("%d", &dadodigitado);
-			if (localizar(&raiz, dadodigitado) == NULL) {
-				puts("\nElemento nao localizado");
+		if (op == 3) {
+			gotoxy(2,2); printf("Informe o Nome do Aluno: ");
+			fflush(stdin);
+			fgets(nome,50,stdin);
+			
+			remover(&t, nome);
+			
+			getch();
+		}
+		
+		if (op == 4) {
+			if (t == NULL) {
+				printf("Arvore Vazia!");
 			} else {
-				puts("\nElemento localizado");
+				parentesesAninhados(t);
 			}
 			getch();
-		}*/
+		}
 	} // Fim do while.
 }
 
 void inserir(turma *aluno, char nome[50], float media, int ano) {
-	//printf("inserir");
 	if ((*aluno) == NULL) {
 		(*aluno) = (struct aluno *) malloc(sizeof(struct aluno));
 		(*aluno)->direita = NULL;
@@ -81,8 +101,7 @@ void inserir(turma *aluno, char nome[50], float media, int ano) {
 		(*aluno)->esquerda = NULL;
 		puts("Raiz");
 	} else {
-		// if (n < (*nodo)->dado) {
-		if (true) {
+		if (stricmp(nome,(*aluno)->nomeCompleto) < 0) {
 			inserir(&(*aluno)->esquerda, nome, media, ano);
 			puts("Esquerda");
 		} else {
@@ -93,63 +112,64 @@ void inserir(turma *aluno, char nome[50], float media, int ano) {
 }
 
 void listarEmOrdem(turma aluno) {
-	//printf("listarEmOrdem");
 	if (aluno != NULL) {
 		listarEmOrdem(aluno->esquerda);
 		
-		printf("Nome....: %s \n",aluno->nomeCompleto);
-		printf("Media...: %.1f \n",aluno->mediaFinal);
-		printf("Ano.....: %i \n",aluno->anoCursou);
+		gotoxy(2,2); printf("Nome....: %s \n",aluno->nomeCompleto);
+		gotoxy(2,4); printf("Media...: %.1f \n",aluno->mediaFinal);
+		gotoxy(2,6); printf("Ano.....: %i \n",aluno->anoCursou);
 		
 		listarEmOrdem(aluno->direita);
 	}
 }
 
-/*int remover(tipo *plist, char *x) {
-	printf("remover");
-	/*
-	TREEPTR p;
-	if (*plist==NULL) {
+int remover(turma *aluno, char nome[50]) {
+	turma t;
+	if (*aluno==NULL) {
 		return (1);
 	}
-	if ((*x == (*plist)->info) == 1) {
-		p=*plist;
-		if ((*plist)->esq == NULL) {
+	if (stricmp((*aluno)->nomeCompleto,nome) == 0) {
+		t=*aluno;
+		if ((*aluno)->esquerda == NULL) {
 			// A raiz nao tem filho esquerdo.
-			*plist=(*plist)->dir;
-		} else if ((*plist)->dir == NULL) {
+			*aluno=(*aluno)->direita;
+		} else if ((*aluno)->direita == NULL) {
 			// A raiz nao tem filho direito.
-			*plist=(*plist)->esq;
+			*aluno=(*aluno)->esquerda;
 		} else {
 			// A raiz tem ambos os filhos.
-			p=tMaior(&((*plist)->esq));
-			(*plist)->info = p->info;
+			t = maior(&((*aluno)->esquerda));
+			strcpy((*aluno)->nomeCompleto,t->nomeCompleto);
+			(*aluno)->mediaFinal = t->mediaFinal;
+			(*aluno)->anoCursou = t->anoCursou;
 		}
-		free(p);
-		printf("\nElemento achado e removido");
-	} else if ((*x < (*plist)->info) == 1) {
-		remover(&((*plist)->esq), x);
+		free(t);
+		gotoxy(2,2); printf("\nAluno encontrado e removido");
+	} else if (stricmp(nome,(*aluno)->nomeCompleto) < 0) {
+		remover(&((*aluno)->esquerda), nome);
 	} else {
-		remover(&((*plist)->dir), x);
-	}* /
-}*/
-
-/*tipo localizar(tipo *nodo, int n) {
-	printf("localizar");
-	/*
-	if ((*nodo) == NULL) {
-		return(NULL);
-	} else {
-		if ((*nodo)->dado == n) {
-			return(*nodo);
-		} else {
-			if (n < (*nodo)->dado) {
-				return(localizar(&(*nodo)->esquerda, n));
-			} else {
-				return(localizar(&(*nodo)->direita, n));
-			}
-		}
+		remover(&((*aluno)->direita), nome);
 	}
-	* /
-}*/
+}
+
+turma maior(turma *aluno) {
+	turma t;
+	t=*aluno;
+	if (t->direita == NULL) {
+		*aluno=(*aluno)->esquerda;
+		return(t);
+	} else {
+		return(maior(&((*aluno)->direita)));
+	}
+}
+
+void parentesesAninhados(turma aluno) {
+	if (aluno != NULL) {
+		printf(" ( ");
+		printf("%s", aluno->nomeCompleto);
+		parentesesAninhados(aluno->esquerda);
+		parentesesAninhados(aluno->direita);
+		printf(" ) ");
+	}
+}
 
