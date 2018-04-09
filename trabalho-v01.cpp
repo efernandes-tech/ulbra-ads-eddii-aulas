@@ -115,9 +115,9 @@ void listarEmOrdem(turma aluno) {
 	if (aluno != NULL) {
 		listarEmOrdem(aluno->esquerda);
 		
-		gotoxy(2,2); printf("Nome....: %s \n",aluno->nomeCompleto);
-		gotoxy(2,4); printf("Media...: %.1f \n",aluno->mediaFinal);
-		gotoxy(2,6); printf("Ano.....: %i \n",aluno->anoCursou);
+		printf("Nome....: %s \n", aluno->nomeCompleto);
+		printf("Media...: %.1f \n", aluno->mediaFinal);
+		printf("Ano.....: %i \n", aluno->anoCursou);
 		
 		listarEmOrdem(aluno->direita);
 	}
