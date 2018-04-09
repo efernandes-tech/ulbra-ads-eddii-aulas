@@ -1,22 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <string.h>
 #include <conio.c>
 
-typedef struct arvore {
-	int dado;
-	struct arvore *direita, *esquerda;
-} *tipo;
+typedef struct aluno {
+	char nomeCompleto[50];
+	float mediaFinal;
+	int anoCursou;
+	struct aluno *direita, *esquerda;
+} *turma;
 
-void inserir(tipo *nodo, int n);
-void listarEmOrdem(tipo nodo);
-int remover(tipo *plist, char *x);
-tipo localizar(tipo *nodo, int n);
+void inserir(turma *aluno, char nome[50], float media, int ano);
+void listarEmOrdem(turma aluno);
+// int remover(tipo *plist, char *x);
+// tipo localizar(tipo *nodo, int n);
 
 main() {
-	tipo raiz = NULL;
-	int op = 0, achou = 0, dadodigitado;
-	
+	turma t = NULL;
+	int op = 0, achou = 0;
+	char nome[50];
+	float media;
+	int ano;
+
 	while (op != 6) {
 		system("cls");
 		printf("Menu de op%c%ces\n", 135, 228);
@@ -31,23 +37,27 @@ main() {
 		system("cls");
 		
 		if (op == 1) {
-			puts("Informe o valor a ser inserido na arvore: ");
-			scanf("%d", &dadodigitado);
-			puts("Caminho da insercao: ");
-			inserir(&raiz, dadodigitado);
+			printf("Nome.........................: ");
+			fflush(stdin);
+			fgets(nome,50,stdin);
+			printf("Media........................: ");
+			scanf("%f",&media);
+			printf("Ano..........................: ");
+			scanf("%i",&ano);
+			inserir(&t, nome, media, ano);
 			getch();
 		}
 		
 		if (op == 2) {
-			if (raiz == NULL) {
+			if (t == NULL) {
 				puts("Arvore vazia");
 			} else {
-				listarEmOrdem(raiz);
+				listarEmOrdem(t);
 			}
 			getch();
 		}
 		
-		if (op == 3) {
+		/*if (op == 3) {
 			puts("Informe o valor a ser localizado na arvore: ");
 			scanf("%d", &dadodigitado);
 			if (localizar(&raiz, dadodigitado) == NULL) {
@@ -56,43 +66,46 @@ main() {
 				puts("\nElemento localizado");
 			}
 			getch();
-		}
+		}*/
 	} // Fim do while.
 }
 
-void inserir(tipo *nodo, int n) {
-	printf("inserir");
-	/*
-	if ((*nodo) == NULL) {
-		(*nodo) = (struct arvore *) malloc(sizeof(struct arvore));
-		(*nodo)->direita = NULL;
-		(*nodo)->dado = n;
-		(*nodo)->esquerda = NULL;
+void inserir(turma *aluno, char nome[50], float media, int ano) {
+	//printf("inserir");
+	if ((*aluno) == NULL) {
+		(*aluno) = (struct aluno *) malloc(sizeof(struct aluno));
+		(*aluno)->direita = NULL;
+		strcpy((*aluno)->nomeCompleto,nome);
+		(*aluno)->mediaFinal = media;
+		(*aluno)->anoCursou = ano;
+		(*aluno)->esquerda = NULL;
 		puts("Raiz");
 	} else {
-		if (n < (*nodo)->dado) {
-			inserir(&(*nodo)->esquerda, n);
+		// if (n < (*nodo)->dado) {
+		if (true) {
+			inserir(&(*aluno)->esquerda, nome, media, ano);
 			puts("Esquerda");
 		} else {
-			inserir(&(*nodo)->direita, n);
+			inserir(&(*aluno)->direita, nome, media, ano);
 			puts("Direita");
 		}
 	}
-	*/
 }
 
-void listarEmOrdem(tipo nodo) {
-	printf("listarEmOrdem");
-	/*
-	if (nodo != NULL) {
-		emordem(nodo->esquerda);
-		printf("%d ", nodo->dado);
-		emordem(nodo->direita);
+void listarEmOrdem(turma aluno) {
+	//printf("listarEmOrdem");
+	if (aluno != NULL) {
+		listarEmOrdem(aluno->esquerda);
+		
+		printf("Nome....: %s \n",aluno->nomeCompleto);
+		printf("Media...: %.1f \n",aluno->mediaFinal);
+		printf("Ano.....: %i \n",aluno->anoCursou);
+		
+		listarEmOrdem(aluno->direita);
 	}
-	*/
 }
 
-int remover(tipo *plist, char *x) {
+/*int remover(tipo *plist, char *x) {
 	printf("remover");
 	/*
 	TREEPTR p;
@@ -118,10 +131,10 @@ int remover(tipo *plist, char *x) {
 		remover(&((*plist)->esq), x);
 	} else {
 		remover(&((*plist)->dir), x);
-	}*/
-}
+	}* /
+}*/
 
-tipo localizar(tipo *nodo, int n) {
+/*tipo localizar(tipo *nodo, int n) {
 	printf("localizar");
 	/*
 	if ((*nodo) == NULL) {
@@ -137,6 +150,6 @@ tipo localizar(tipo *nodo, int n) {
 			}
 		}
 	}
-	*/
-}
+	* /
+}*/
 
