@@ -1,3 +1,5 @@
+// Éderson e Vander.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -172,7 +174,7 @@ int remover(turma *aluno, char nome[50], int *achou) {
 			*aluno=(*aluno)->esquerda;
 		} else {
 			// A raiz tem ambos os filhos.
-			t = maior(&((*aluno)->esquerda));
+			t = maior(&((*aluno)->esquerda),(*aluno));
 			strcpy((*aluno)->nomeCompleto,t->nomeCompleto);
 			(*aluno)->mediaFinal = t->mediaFinal;
 			(*aluno)->anoCursou = t->anoCursou;
@@ -186,14 +188,16 @@ int remover(turma *aluno, char nome[50], int *achou) {
 	}
 }
 
-turma maior(turma *aluno) {
+turma maior(turma *aluno, turma *alunoAnterior) {
 	turma t;
 	t=*aluno;
 	if (t->direita == NULL) {
+		if(t->esquerda == NULL)
+			*alunoAnterior->
 		*aluno=(*aluno)->esquerda;
 		return(t);
 	} else {
-		return(maior(&((*aluno)->direita)));
+		return(maior(&((*aluno)->direita),&(*aluno));
 	}
 }
 
