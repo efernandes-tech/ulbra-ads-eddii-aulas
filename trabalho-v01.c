@@ -1,4 +1,4 @@
-// Éderson e Vander.
+// Ã‰derson e Vander.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,14 +46,14 @@ main() {
 	while (op != 5) {
 		system("cls");
 
-		gotoxy(2,2); printf("===== Menu de Opções =====");
+		gotoxy(2,2); printf("===== Menu de OpÃ§Ãµes =====");
 		gotoxy(2,4); printf("1 - Inserir Aluno.");
 		gotoxy(2,6); printf("2 - Listar Em-ordem.");
 		gotoxy(2,8); printf("3 - Remover Aluno.");
-		gotoxy(2,10); printf("4 - Parênteses Aninhados.");
+		gotoxy(2,10); printf("4 - ParÃªnteses Aninhados.");
 		gotoxy(2,12); printf("5 - Sair.");
 		
-		gotoxy(2,16); printf("Escolha uma Opção: ");
+		gotoxy(2,16); printf("Escolha uma OpÃ§Ã£o: ");
 		scanf("%d", &op);
 		fflush(stdin);
 		
@@ -73,7 +73,7 @@ main() {
 			gotoxy(2,8); printf("Ano Que Cursou........: ");
 			scanf("%i",&ano);
 			
-			gotoxy(2,10); printf("Caminho da inserção: \n\n");
+			gotoxy(2,10); printf("Caminho da inserÃ§Ã£o: \n\n");
 
 			inserir(&t, nome, media, ano);
 			
@@ -108,7 +108,7 @@ main() {
 					gotoxy(2,2); printf("\n\n Aluno encontrado e removido!\n\n Digite algo para continuar....");
 					achou = 0;
 				} else {
-					gotoxy(2,2); printf("\n\n Aluno não encontrado!\n\n Digite algo para continuar....");
+					gotoxy(2,2); printf("\n\n Aluno nÃ£o encontrado!\n\n Digite algo para continuar....");
 				}
 			}
 			getch();
@@ -118,7 +118,7 @@ main() {
 			if (t == NULL) {
 				printf("\n\n\n\n\t\tNenhum aluno cadastrado!\n\n\n\n\n\t Pressione uma tecla para continuar...");
 			} else {
-				printf("\n\tRepresentação por Parênteses Aninhados:\n\n\n");
+				printf("\n\tRepresentaÃ§Ã£o por ParÃªnteses Aninhados:\n\n\n");
 				parentesesAninhados(t);
 				printf("\n\n\n\n\n Pressione algo para continuar....");
 			}
